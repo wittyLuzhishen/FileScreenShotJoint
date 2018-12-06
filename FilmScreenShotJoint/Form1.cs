@@ -233,7 +233,7 @@ namespace FilmScreenShotJoint
                 BackColor = coverPanelColor,
                 Location = new Point(0, panelHeight * (int)bottom.Value / limitLength),
                 Name = "panelBottom" + index,
-                Size = new Size(pictureBoxWidth, panelHeight * (limitLength - (int)top.Value) / limitLength),
+                Size = new Size(pictureBoxWidth, panelHeight * (limitLength - (int)bottom.Value) / limitLength),
                 TabIndex = bottomFlag
             };
 
@@ -296,7 +296,7 @@ namespace FilmScreenShotJoint
                     showError("panel is null");
                     return;
                 }
-                panel.Size = new Size(pictureBoxWidth, panelHeight * (int)src.Value / limitLength);
+                panel.Size = new Size(pictureBoxWidth, panelHeight * ((int)src.Value - 1) / limitLength);
             }
             else// 下面
             {
