@@ -40,6 +40,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.radioButtonZoom = new System.Windows.Forms.RadioButton();
             this.radioButtonAutoSize = new System.Windows.Forms.RadioButton();
+            this.checkBoxUniOp = new System.Windows.Forms.CheckBox();
             this.groupBoxOriginalImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             this.groupBoxPreview.SuspendLayout();
@@ -165,11 +166,25 @@
             this.radioButtonAutoSize.UseVisualStyleBackColor = true;
             this.radioButtonAutoSize.CheckedChanged += new System.EventHandler(this.radioButtonAutoSize_CheckedChanged);
             // 
+            // checkBoxUniOp
+            // 
+            this.checkBoxUniOp.AutoSize = true;
+            this.checkBoxUniOp.Checked = true;
+            this.checkBoxUniOp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUniOp.Location = new System.Drawing.Point(499, 16);
+            this.checkBoxUniOp.Name = "checkBoxUniOp";
+            this.checkBoxUniOp.Size = new System.Drawing.Size(72, 16);
+            this.checkBoxUniOp.TabIndex = 10;
+            this.checkBoxUniOp.Text = "统一操作";
+            this.checkBoxUniOp.UseVisualStyleBackColor = true;
+            this.checkBoxUniOp.CheckedChanged += new System.EventHandler(this.checkBoxUniOp_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 662);
+            this.Controls.Add(this.checkBoxUniOp);
             this.Controls.Add(this.radioButtonAutoSize);
             this.Controls.Add(this.radioButtonZoom);
             this.Controls.Add(this.buttonSave);
@@ -203,6 +218,7 @@
         private System.Windows.Forms.Panel panelPreview;
         private System.Windows.Forms.RadioButton radioButtonZoom;
         private System.Windows.Forms.RadioButton radioButtonAutoSize;
+        private System.Windows.Forms.CheckBox checkBoxUniOp;
     }
 }
 

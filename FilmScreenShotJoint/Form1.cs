@@ -217,6 +217,10 @@ namespace FilmScreenShotJoint
                 Value = Math.Min(defaultLimitTop + minSubtitleHeight + initExtraSubtitleHeight / 2, limitLength)
             };
             bottom.ValueChanged += new EventHandler(numericUpDownValueChanged);
+            if (index != 0)
+            {
+                top.Enabled = bottom.Enabled = !checkBoxUniOp.Checked;
+            }
             #endregion
 
             #region label
@@ -256,7 +260,7 @@ namespace FilmScreenShotJoint
                 Location = new Point(8, 8),
                 Name = "panel" + index,
                 Size = new Size(panelWidth, panelHeight),
-                TabIndex = 0
+                TabIndex = index
             };
             panel.Controls.Add(top);
             panel.Controls.Add(bottom);
@@ -324,7 +328,7 @@ namespace FilmScreenShotJoint
                     return;
                 }
                 src.Maximum = Math.Max(src.Maximum, dest.Value);
-                dest.Minimum = src.Value + minSubtitleHeight;// todo 如果dest的值小于最小值，可能需要程序调整
+                dest.Minimum = src.Value + minSubtitleHeight;// 如果dest的值小于最小值，则变为最小值
                 panel = GetInParent<Panel>(src.Parent, topFlag);
                 if (panel == null)
                 {
@@ -332,6 +336,7 @@ namespace FilmScreenShotJoint
                     return;
                 }
                 panel.Size = new Size(pictureBoxWidth, GetPanelHeight(src, topFlag));
+                numericUpDownValueChangedUniOp(src.Parent);
             }
             else// 下面
             {
@@ -342,7 +347,7 @@ namespace FilmScreenShotJoint
                     return;
                 }
                 src.Minimum = Math.Min(src.Minimum, dest.Value);
-                dest.Maximum = src.Value - minSubtitleHeight;// todo 如果dest的值小于最小值，可能需要程序调整
+                dest.Maximum = src.Value - minSubtitleHeight;// 如果dest的值小于最小值，则变为最小值
                 panel = GetInParent<Panel>(src.Parent, bottomFlag);
                 if (panel == null)
                 {
@@ -351,6 +356,42 @@ namespace FilmScreenShotJoint
                 }
                 panel.Size = new Size(pictureBoxWidth, GetPanelHeight(src, bottomFlag));
                 panel.Location = new Point(0, GetBottomPanelLocationY(src));
+                numericUpDownValueChangedUniOp(src.Parent);
+            }
+        }
+
+        private void numericUpDownValueChangedUniOp(Control topContainerPanel)
+        {
+            if (!checkBoxUniOp.Checked || topContainerPanel == null)
+            {
+                return;
+            }
+            NumericUpDown lower = GetInParent<NumericUpDown>(topContainerPanel, topFlag);
+            NumericUpDown upper = GetInParent<NumericUpDown>(topContainerPanel, bottomFlag);
+            Panel panelTop = GetInParent<Panel>(topContainerPanel, topFlag);
+            Panel panelBottom = GetInParent<Panel>(topContainerPanel, bottomFlag);
+            foreach (Control c in flowLayoutPanel1.Controls)
+            {
+                if (c.TabIndex == 0 || !(c is Panel))
+                {
+                    continue;
+                }
+                // 数值统一
+                NumericUpDown top, bottom;
+                top = GetInParent<NumericUpDown>(c, topFlag);
+                bottom = GetInParent<NumericUpDown>(c, bottomFlag);
+                top.Maximum = lower.Maximum;
+                bottom.Minimum = upper.Minimum;
+                top.Value = lower.Value;
+                bottom.Value = upper.Value;
+                                
+                // 蒙版统一
+                Panel pT = GetInParent<Panel>(c, topFlag);
+                pT.Size = panelTop.Size;
+                pT.Location = panelTop.Location;
+                Panel pB = GetInParent<Panel>(c, bottomFlag);
+                pB.Size = panelBottom.Size;
+                pB.Location = panelBottom.Location;
             }
         }
 
@@ -472,6 +513,32 @@ namespace FilmScreenShotJoint
             pictureBoxPreview.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBoxPreview.Location = new Point(0, 0);
             panelPreview.Focus();
+        }
+
+        private void checkBoxUniOp_CheckedChanged(object sender, EventArgs e)
+        {
+            Control topContainerPanel = null;
+            foreach (Control c in flowLayoutPanel1.Controls)
+            {
+                if (!(c is Panel))
+                {
+                    continue;
+                }
+                if (c.TabIndex == 0)
+                {
+                    topContainerPanel = c;
+                    continue;
+                }
+                foreach (Control cc in c.Controls)
+                {
+                    if (cc is NumericUpDown)
+                    {
+                        cc.Enabled = !checkBoxUniOp.Checked;
+                        // 解除min和max限制,统一蒙版
+                        numericUpDownValueChangedUniOp(topContainerPanel);
+                    }
+                }
+            }
         }
 
         private void ShowErrorByMessageBox(string msg)
