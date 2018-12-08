@@ -36,8 +36,8 @@
             this.buttonPreview = new System.Windows.Forms.Button();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.groupBoxPreview = new System.Windows.Forms.GroupBox();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.panelPreview = new System.Windows.Forms.Panel();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.radioButtonZoom = new System.Windows.Forms.RadioButton();
             this.radioButtonAutoSize = new System.Windows.Forms.RadioButton();
             this.groupBoxOriginalImage.SuspendLayout();
@@ -55,7 +55,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(3);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(544, 593);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(556, 593);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -64,7 +64,7 @@
             this.groupBoxOriginalImage.Controls.Add(this.flowLayoutPanel1);
             this.groupBoxOriginalImage.Location = new System.Drawing.Point(12, 37);
             this.groupBoxOriginalImage.Name = "groupBoxOriginalImage";
-            this.groupBoxOriginalImage.Size = new System.Drawing.Size(550, 613);
+            this.groupBoxOriginalImage.Size = new System.Drawing.Size(562, 613);
             this.groupBoxOriginalImage.TabIndex = 2;
             this.groupBoxOriginalImage.TabStop = false;
             this.groupBoxOriginalImage.Text = "原图列表";
@@ -120,16 +120,6 @@
             this.groupBoxPreview.TabStop = false;
             this.groupBoxPreview.Text = "结果预览";
             // 
-            // buttonSave
-            // 
-            this.buttonSave.Location = new System.Drawing.Point(871, 621);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(84, 26);
-            this.buttonSave.TabIndex = 7;
-            this.buttonSave.Text = "保存";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
             // panelPreview
             // 
             this.panelPreview.AutoScroll = true;
@@ -139,6 +129,16 @@
             this.panelPreview.Name = "panelPreview";
             this.panelPreview.Size = new System.Drawing.Size(586, 558);
             this.panelPreview.TabIndex = 6;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(871, 621);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(84, 26);
+            this.buttonSave.TabIndex = 7;
+            this.buttonSave.Text = "保存";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // radioButtonZoom
             // 

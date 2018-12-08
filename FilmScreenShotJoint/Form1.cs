@@ -22,11 +22,13 @@ namespace FilmScreenShotJoint
         }
 
         private Size pictureBoxPreviewInitSize;
-        const int panelWidth = 526;
-        const int panelHeight = 284;
+        const int panelWidth = 530;
+        const int panelHeight = 290;
         const int numericUpDownWidth = 50;
         const int numericUpDownHeight = 21;
         const int pictureBoxWidth = 467;
+        const int labelWidth = 30;
+        const int labelHeight = 12;
         /// <summary>
         /// 数字选择器的量程
         /// 
@@ -100,8 +102,8 @@ namespace FilmScreenShotJoint
         private void SetLimit(int limitLen)
         {
             limitLength = limitLen;
-            defaultLimitTop = (int)(limitLength * 0.78);
-            minSubtitleHeight = Math.Min((int)(limitLength * 0.1), 40);
+            defaultLimitTop = (int)(limitLength * 0.82);
+            minSubtitleHeight = Math.Min((int)(limitLength * 0.05), 50);
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace FilmScreenShotJoint
                 Location = new Point(0, 0),
                 Size = new Size(pictureBoxWidth, panelHeight),
                 Name = "pictureBox" + index,
-                SizeMode = PictureBoxSizeMode.Zoom,
+                SizeMode = PictureBoxSizeMode.StretchImage,
                 Image = img
             };
             pictureBox.Click += new EventHandler(panel_Click);
@@ -217,23 +219,34 @@ namespace FilmScreenShotJoint
             bottom.ValueChanged += new EventHandler(numericUpDownValueChanged);
             #endregion
 
+            #region label
+            Label label = new Label
+            {
+                Name = "label" + index,
+                Location = new Point(panelWidth - labelWidth, (panelHeight - labelHeight) / 2),
+                Size = new Size(labelWidth, labelHeight),
+                Text = "图" + (index + 1)
+            };
+            label.Click += new EventHandler(panel_Click);
+            #endregion
+
             #region panel      
             Color coverPanelColor = Color.LightBlue;
             Panel panelTop = new Panel
             {
                 BackColor = coverPanelColor,
-                Location = new Point(0, 0),
                 Name = "panelTop" + index,
-                Size = new Size(pictureBoxWidth, panelHeight * (int)top.Value / limitLength),
+                Location = new Point(0, 0),
+                Size = new Size(pictureBoxWidth, GetPanelHeight(top, topFlag)),
                 TabIndex = topFlag
             };
 
             Panel panelBottom = new Panel
             {
                 BackColor = coverPanelColor,
-                Location = new Point(0, panelHeight * (int)bottom.Value / limitLength),
                 Name = "panelBottom" + index,
-                Size = new Size(pictureBoxWidth, panelHeight * (limitLength - (int)bottom.Value) / limitLength),
+                Location = new Point(0, GetBottomPanelLocationY(bottom)),
+                Size = new Size(pictureBoxWidth, GetPanelHeight(bottom, bottomFlag)),
                 TabIndex = bottomFlag
             };
 
@@ -247,6 +260,7 @@ namespace FilmScreenShotJoint
             };
             panel.Controls.Add(top);
             panel.Controls.Add(bottom);
+            panel.Controls.Add(label);
             panel.Controls.Add(panelTop);// 先加的显示在上层
             panel.Controls.Add(panelBottom);// 先加的显示在上层
             panel.Controls.Add(pictureBox);
@@ -270,6 +284,27 @@ namespace FilmScreenShotJoint
             #endregion
         }
 
+        private int GetPanelHeight(NumericUpDown numericUpDown, int flag)
+        {
+            int height = 0;
+            if (flag == topFlag)
+            {
+                height = (int)((numericUpDown.Value - 1) / limitLength * panelHeight);
+            }
+            else
+            {
+                height = (int)((limitLength - numericUpDown.Value) / limitLength * panelHeight);
+            }
+            Console.WriteLine($"panel{(flag==topFlag?"Top":"Bottom")}'s height: {height}");
+            return height;
+        }
+
+        private int GetBottomPanelLocationY(NumericUpDown bottom)
+        {
+            int y = (int)(bottom.Value / limitLength * panelHeight);
+            Console.WriteLine($"panelBottom's Y:{y}");
+            return y;
+        }
 
         private void numericUpDownValueChanged(object sender, EventArgs e)
         {
@@ -296,7 +331,7 @@ namespace FilmScreenShotJoint
                     showError("panel is null");
                     return;
                 }
-                panel.Size = new Size(pictureBoxWidth, panelHeight * ((int)src.Value - 1) / limitLength);
+                panel.Size = new Size(pictureBoxWidth, GetPanelHeight(src, topFlag));
             }
             else// 下面
             {
@@ -314,8 +349,8 @@ namespace FilmScreenShotJoint
                     showError("panel is null");
                     return;
                 }
-                panel.Size = new Size(pictureBoxWidth, panelHeight * (limitLength - (int)src.Value) / limitLength);
-                panel.Location = new Point(0, panelHeight * (int)src.Value / limitLength);
+                panel.Size = new Size(pictureBoxWidth, GetPanelHeight(src, bottomFlag));
+                panel.Location = new Point(0, GetBottomPanelLocationY(src));
             }
         }
 
